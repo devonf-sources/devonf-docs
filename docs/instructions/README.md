@@ -1,3 +1,23 @@
+# Motorola G73 5G Custom ROM Guide
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Unlocking the Bootloader](#unlocking-the-bootloader)
+  - [Setting up the environment](#setting-up-the-environment)
+  - [Enabling OEM Unlocking toggle](#enabling-oem-unlocking-toggle)
+  - [Getting Device ID](#getting-device-id)
+  - [Getting Unlock Token](#getting-unlock-token)
+  - [Unlock process](#unlock-process)
+- [Flashing ROMs](#flashing-roms)
+  - [Download the relevant files](#download-the-relevant-files)
+  - [Flash the initial install zip](#flash-the-initial-install-zip)
+  - [Format Data](#format-data)
+  - [Flash ROMs](#flash-roms)
+  - [Updating to a newer build](#updating-to-a-newer-build)
+
+---
+
 ## Introduction
 
 Before we begin, let me make it perfectly clear that,
@@ -10,15 +30,15 @@ Please do some research if you have any concerns about features included in this
 YOU are choosing to make these modifications, and if you point the finger at me for messing up your device, I will laugh at you.
 ```
 
-as well as the fact that this guide is only meant to be followed for **Android 16 ROMs (and newer) which are based off of Android 15 Firmware.**
+as well as the fact that this guide is only meant to be followed for **Android 17 ROMs (and newer) which are based off of Android 14 (ARB_02) Firmware.**
 
-Also to add: This guide is ONLY for devices that are codenamed cancunf (G64 is cancunf as well) and that you need a PC to do this.
+Also to add: This guide is ONLY for devices that are codenamed devonf and that you need a PC to do this.
 
 Be warned that if you are already progressing with an update on Stock, you must complete the update, reboot to system and then follow the instructions to unlock the bootloader and flash ROMs.
 
-**The September update of stock (V1TDS35H.83-20-5-14 for everyone, V1TDS35H.83-20-5-8-6 for EU and V1TDS35H.83-20-5-8-2-1-3 for Brazil) bumps the ARB (Anti-RollBack) counter once more, thus if you update to it, you will not be able to flash any Android 16 ROM. Trying to do so will cause your device to be hardbricked beyond repair.**
+**The October update of stock (U1TNS34.82-12-7-26 for everyone and U1TNS34.82-12-17-20 for EU) bumps the ARB (Anti-RollBack) counter once more, thus if you update to it, you will not be able to downgrade to any older firmware any longer. Yes, this is similar to the first ARB situation where you could not downgrade to A13. Trying to do so will cause your device to be hardbricked beyond repair.**
 
-**As Android 17 builds ship V1TDS35H.83-20-5-14 firmware, you can no longer downgrade to Android 16/15 builds as Motorola bumped the ARB (Anti-RollBack) counter. Trying to do so will cause your device to be hardbricked beyond repair. You also cannot downgrade to an older Stock ROM released before the September security patch (V1TDS35H.83-20-5-14 for everyone, V1TDS35H.83-20-5-8-6 for EU and V1TDS35H.83-20-5-8-2-1-3 for Brazil).**
+**As Android 17 builds ship U1TNS34.82-12-7-26 firmware, you can no longer downgrade to Android 16/15 builds as Motorola bumped the ARB (Anti-RollBack) counter. Trying to do so will cause your device to be hardbricked beyond repair. You also cannot downgrade to an older Stock ROM released before the October security patch (U1TNS34.82-12-7-26 for everyone and U1TNS34.82-12-17-20 for EU).**
 
 ## Unlocking the Bootloader
 
@@ -105,16 +125,16 @@ If you have run the command correctly, your device's screen will confirm that yo
 
 Now that you have unlocked the bootloader, download the following files:
 
-- PixleOS zip from PixelOS Website.
-- [Initial install zip (Click Me) ](https://sourceforge.net/projects/pixelos-releases/files/sixteen/cancunf/recovery/).
+- PixelOS rom zip.
+- Initial install zip.
 
-e.g: PixelOS_cancunf-16.0-20251111-0513.zip and PixelOS\_16\_cancunf\_initial\_install.zip
+e.g: PixelOS_devonf-17.0-YYYYMMDD.zip and PixelOS\_17\_devonf\_initial\_install.zip
 
 The initial install zip has the boot and vendor\_boot images bundled together.
 
 The initial install zip serves to set up the initial installation environment, hence it is not updated since the original upload and **MUST NOT be used to root!**
 
-**You don’t need to \`fill your slots\` or \`flash Android 15 stock\` beforehand, as the ROMs already bundle Android 15 firmware, unless your device is on anything older than Android 14 May 2024 stock (U1TDS34.94-12-7-5), in which case you’ll need to re-flash the same ROM (without formatting data) to ensure both slots have post-ARB firmware.**
+**You don’t need to \`fill your slots\` or \`flash Android 14 stock\` beforehand, as the ROMs already bundle Android 14 (ARB_02) firmware, unless your device is on anything older than Android 14 Oct 2026 stock (U1TNS34.82-12-7-26), in which case you’ll need to re-flash the same ROM (without formatting data) to ensure both slots have post-ARB firmware.**
 
 ### Flash the initial install zip
 
@@ -158,7 +178,7 @@ Moving on, type ```fastboot --skip-reboot update ``` and then drag-and-drop the 
 e.g:
 
 ```
-fastboot --skip-reboot update PixelOS_16_cancunf_initial_install.zip
+fastboot --skip-reboot update PixelOS_17_devonf_initial_install.zip
 ```
 
 ### Format Data
@@ -174,7 +194,7 @@ Finally, choose the **Apply update from ADB / Apply update -> Apply update from 
 e.g:
 
 ```
-adb sideload PixelOS_cancunf-16.0-20251111-0513.zip
+adb sideload PixelOS_devonf-17.0-YYYYMMDD.zip
 ```
 
 Once the process has been completed without any errors, proceed to reboot your device into your newly flashed ROM :)
