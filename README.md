@@ -3,6 +3,7 @@
 ## 📚 Guides & Resources
 
 * **[Moto G73 5G Custom rom flashing Instructions](./docs/instructions/README.md)** — Step-by-step guide to unlock bootloader, flash a custom rom.
+* **[How to root Moto G73 5G](./docs/how-to-root/README.md)** - Step-by-step guide to unlock bootloader, root the device.
 
 ## 📱 Device imformation
 
