@@ -1,87 +1,66 @@
-# Stock Flash File Usage Instructions
+# How to flash stock rom & lock the bootloader in Moto G73 5G
 
 **Before you start:** 
 - Read the guide carefully.
-- Follow step by step top to bottom.
-- This guide understands user has previous knowledge and may only provide necessary steps.
-- This guide is based on windows, but general flashing instructions are same.
-- Remember flashing carries risk and this guide or maker won't be liable for damage or mishap happened.
+- Follow the steps from top to bottom.
+- This guide understands the user has previous knowledge and may only provide necessary steps.
+- Remember flashing carries risk and this guide or maker won't be liable for damage or mishap.
 
 ## Anti-Rollback (ARB)
-It is simply put a mechanism to prevent flashing old firmware.
+Simply put, it is a mechanism to prevent flashing old firmware.
 
-* Read [Check ARB](#check-arb) for checking device arb and read bellow to understand arb limits respective to your version and device.
+* Read [Check ARB](#check-arb) for checking device ARB and read below to understand ARB limits respective to your version and device.
 
-Respective to G54:
-* **Pre-ARB:** Before May A14 update or Secure bootloder `0x0` → can downgrade only till A13
+* **Pre-ARB :** From the first A13 update to the last A13 update (Secure bootloader `0x0`):
 
-  * A13 till A14 March -> U1TDS34.94-12-7-2
+  * `T1TNS33.14-44-2` --> `T1TNS33.14-90-9-3-1-2` (last A13 build)
   * **Do NOT** relock bootloader on A13
-  * It is not recommended to lock, but can be used while unlocked
+  * Locking is not recommended, though the device can be used safely while unlocked.
 
-* **ARB:** Post A14 May update:
+* **ARB :** From the first A14 update to the August 2026 security patch (Secure bootloader `0x1`):
 
-  * Supports A14 May and Secure bootloder `0x1` → A15 July 2026 patch.
-    * A15 July -> V1TDS35H.83-20-5-12
+  * **Global :** `U1TNS34.82-12-7` --> `U1TNS34.82-12-7-25`
+  * **EU :** `U1TNS34.82-12-7` --> `U1TNS34.82-12-17-19`
   * **Do NOT** flash below allowed ARB level or device **will hardbrick**
 
-* **ARB V2:** Post A15 September patch
-  * September patch [V1TDS35H.83-20-5-14, V1TDS35H.83-20-5-8-2-1-3] and Secure bootloder `0x2`
-  * If device is above or on the patch **DO NOT** flash below it or any A14 builds of stock rom or **it will hardbrick**
+* **ARB_v2 :** From the A14 October 2026 patch and onwards (Secure bootloader `0x2`):
 
-Respective to G64:
-* **Pre-ARB:** Before May A14 update or Secure bootloder `0x0`
-
-  * **Do NOT** attempt to flash A13, as it didn't ship with fw below A14 like G54
-  * Anything below A14 may will work if pre-arb
-
-* **ARB:** Post A14 May update:
-
-  * Supports A14 May and Secure bootloder `0x1` → A15 July 2026 patch.
-    * A15 July -> V1TDS35H.83-20-5-12
-  * **Do NOT** flash below allowed ARB level or device **will hardbrick**
-
-* **ARB V2:** Post A15 September patch
-  * September patch [V1TDS35H.83-20-5-14, V1TDS35H.83-20-5-8-2-1-3] and Secure bootloder `0x2`
-  * If device is above or on the patch **DO NOT** flash below it or A14 builds of stock rom or **it will hardbrick**
+  * **Starts from :** `U1TNS34.82-12-7-26` (Global) and `U1TNS34.82-12-17-20` (EU)
+  * If your device is on or above this patch, **DO NOT** flash below it or any older A14/A13 stock ROM builds, or **it will hard-brick**.
 
 ## Check ARB
 
-* Check ARB for Cancunf devices
-* Run:
+* Check ARB for Devonf device
+* Run :
 
   ```
   fastboot getvar version-bootloader
   fastboot oem read_sv
   ```
-* Output as example:
+* Example output :
 
   ```
-  - version-bootloader[0]: MBM-3.1-cancunf_g_vext-ab328de212-24
-  - version-bootloader[1]: 1234-U1TDS34.94-12-7-2-a1234b
-  - (bootloader) Group0 (Secure bootloader) = 0x2
+  - (bootloader) version-bootloader[0]: MBM-3.1-devonf_g_vext-a9ce5-U1TNS34.
+  - (bootloader) version-bootloader[1]: 82-12-7-25-86c959
+  - (bootloader) Group0 (Secure bootloader) = 0x1
   ```
-* Pre-ARB:
-  * If version-bootloader[1]: between ```U1TDS34.94-12-7``` -> ```U1TDS34.94-12-7-2```
-  * If Secure bootloder `0x0`:
+* Pre-ARB :
+  * version-bootloader : between ```T1TNS33.14-44-2``` --> ```T1TNS33.14-90-9-3-1-2```
+  * Secure bootloader : `0x0`
 
-* ARB:
-  * If version-bootloader[1]: ```U1TDS34.94-12-7-5```, ```V1TD35H.83_20_5``` -> ```V1TDS35H.83-20-5-12```
-  * If Secure bootloderr `0x1`:
+* ARB :
+  * version-bootloader : between ```U1TNS34.82-12-7``` --> ```U1TNS34.82-12-7-25```, ```U1TNS34.82-12-17-19```
+  * Secure bootloader : `0x1`
 
-* ARB V2:
-  * If version-bootloader[1]: ```V1TDS35H.83-20-5-14```, ```V1TDS35H.83-20-5-8-2-1-3``` -> above
-  * If Secure bootloderr `0x2`:
+* ARB_v2 :
+  * version-bootloader : ```U1TNS34.82-12-7-26```, ```U1TNS34.82-12-17-20``` --> above
+  * Secure bootloader : `0x2`
 
 ## Notes
 * Platform tools must be extracted inside ROM folder or set in environment PATH
-  * Downloaded ROM you want to flash should be 1-2 builds older than version you want on stock, It is to ensure you have backup for pre-flash validation error and able to OTA update to fill slots, when you boot.
-  * It is better to OTA to version you want to stay stock on than direct flashing.
-    * Example: Target to be on stock: ```U1TDS34.94-12-9-10-2``` last ARB update for A14. So, use ```U1TDS34.94-12-9-10``` or ```U1TDS34.94-12-7-7``` to flash
-    * It is recommended, But fine if you can't find 1-2 OTA older builds. Just ensure [you meet this slot requirment](#relock-bootloader) before lock.
-      * Ensure device Boots from Slot A.
-    * Remember to be always under ARB rules
-* Use appropriate flash file for flashing from release: [Link](https://github.com/NonameBlank007/Cancunf_Stock_Flash_Guide/releases/tag/cancunf_flash_files)
+* Downloaded the full stock firmware you want to flash.
+* Remember to be always under ARB rules
+* Use appropriate flash file for flashing from release: [Link](https://github.com/devonf-sources/devonf-docs/releases)
 * Install drivers if needed:
   [Motorola Official Drivers](https://motorola-global-portal.custhelp.com/euf/assets/downloads/Motorola_Mobile_Drivers_64bit.msi)
 
@@ -89,7 +68,10 @@ Respective to G64:
 
 * Stock ROM downloaded on PC
 * Flash files added inside Extracted ROM folder
-* Ensure Usb Debugging enabled in devloper option
+* **Backup all your important data including photos, videos, documents etc** - flashing will completely wipe your device.
+* **Remove all Google accounts from the device** (to avoid FRP lock)
+* **Remove screen lock** (PIN, pattern, or password)
+* Ensure USB Debugging enabled in Developer options
 * Motorola Official drivers installed
 * Platform tools extracted in ROM folder or set in system PATH
 * Ensure Device is detected in bootloader mode
@@ -98,96 +80,59 @@ Respective to G64:
 
 * Extract stock ROM on PC
 * Place extracted flash file inside the ROM folder
-* Ensure device is connected and detected in bootloader
+* Ensure device is connected and detected in bootloader mode
 
-  * If not detected, install motorola drivers and restart pc
+  * If not detected, install Motorola Drivers and restart PC
 
-* Flash using correct `flash_file.bat`:
+* Flash using `flash_file.bat`:
 
-  * A13 → use A13 flash_file-A13
-  * A14 → use A14 flash_file-A14
-  * A15 → use A15 flash_file-A15
+  * Download Link : [Click here](https://github.com/devonf-sources/devonf-docs/releases)
 
 * Match ROM version with correct **ARB level**
 * Be inside ROM folder and check device connected
 * Double click on ```flash_file.bat``` to start flashing
-  * You can mannualy flash files with fastboot too
-* After flashing done
-  * Navigate in bootloder
-  * select **Reboot to Recovery**
-  * Click Power Button to confirm
-
-* Booted into stock recovery
-* If dead Android screen appears:
-
-  * **Hold Power + tap Volume Up once**
-  * It will boot you to true recovery
-
-* In true recovery:
-
-  * Navigate with volume keys
-  * Select **Wipe/Format Data → Yes**
-
+  * You can manually flash files with fastboot too
+* Once flashing is done
 * Reboot to system
-* Should be now succesfully booted
 
 ## First Boot Setup
 
-* Complete setup with minimal internet
+* Complete the initial device setup with an active internet connection.
 * Turn off **Smart Updates in toggle** during setup
 * Disconnect internet after setup
-* Turn on devloper option
-  * Enable **USB Debugging**
-  * Ensure **OEM Unlocking should be ON and greyed out**
+* Turn on Developer options
+  * Enable **USB debugging**
+  * Ensure **OEM unlocking is ON and greyed out**
   * If button is greyed out but not toggled ON, It's not a concern if device is unlocked.
 
 ## Relock Bootloader
 
-* Boot to bootloader on stock
-* Check current slot, Run:
-  
-  ```
-  fastboot getvar current-slot
-  ```
-* Output if:
-  
-  ```
-  current-slot: b
-  ```
-  * Option a: Power on device and do OTA to make current-slot: a
-  * Option b: If you dont want to OTA, flash same build again
-  * Then after proceed to locking
-* Output if:
+> ⚠️ **WARNING:** If you are on a custom ROM, rooted stock ROM, or have any system modifications, **flash the clean stock ROM first** before proceeding. Locking the bootloader on modified firmware will brick your device.
 
-  ```
-  current-slot: a
-  ```
-  * Proceed to lock
-
-* To lock, Run:
+* Boot the device in bootloader mode
+* To lock the bootloader, Run:
 
   ```
   fastboot oem lock
   ```
-* In Phone Screen select lock/yes
+
+* On Phone Screen select `lock the bootloader`
   * navigate with volume keys and power button to enter.
-* After lock done, From bootloder boot into recovery
-* Wipe data again
+* Once lock is done
 * Reboot to system
 
-## If Stuck on “OS Not Found”
+## If Stuck on "No valid operating system could be found.”
 
-![No OS](no_os.jpg)
+![No OS](no_valid_os.jpg)
+
 ---
+
 * Press Power button from that screen to Power Off
-* Boot to bootloader
-* Re-flash same stock ROM using flash_file
+* Boot to bootloader mode
+* Re-flash newer version of stock ROM using flash_file
   * If you get pre-flash validation failed, reboot to bootloader again and try again
-  * If still same, flash a newer build than current rom
 * Ensure correct ARB rules
-* Reboot to system (skip wipe this time)
-* Skip setup as much as possible
-* Go back to bootloader → recovery → wipe data
+* Reboot to system
 * Reboot normally
 
 ## Final Steps
@@ -195,31 +140,5 @@ Respective to G64:
 * Complete setup
 * Go to Developer Options
 * OEM Unlocking can now be disabled
-* Disable oem unlocking and reboot
-* Enjoy Device is now locked
-* To fill both slots do OTA once
-  * If you did before for locking bootloder, Then **skip**
-
-# License
-
-SPDX-License-Identifier: MIT
-
-```
-MIT License
-
-Copyright (c) 2026 Noname Blank <nonameblank007@gmail.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
-Read Full LIcense: [Link](LICENSE)
-
-# Credit
-* Thanks [Arpit Jaiswal](https://github.com/arpiitjaiswal) for helping with flash instructions and providing flash files
+* Disable OEM unlocking and reboot
+* Enjoy! Your device is now locked.
