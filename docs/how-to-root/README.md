@@ -165,7 +165,8 @@ If you have run the command correctly, your device's screen will confirm that yo
   - Select boot image which you have just copied
 
   - Click and Start patching
-    If you are patching via kernel based root mangaer like kernelSU, kernelSU Next etc. It will ask for kernel version then choose `android-12 5.10`.
+
+  - If you are patching via kernel based root mangaer like kernelSU, kernelSU Next etc. It will ask for kernel version then choose `android-12 5.10`.
 
   - After patching boot image, Go to `Download/` folder and copy the patched boot image to your PC.
 
